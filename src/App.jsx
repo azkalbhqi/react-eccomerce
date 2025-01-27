@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './Layout'; // Import the Layout component
+import Layout from './components/Layout'; // Import the Layout component
 import Welcome from './components/bigComponents/Welcome';
 import Store from './components/bigComponents/Stores';
 import ProductDetails from './components/bigComponents/ProductDetails';
@@ -10,7 +10,7 @@ const App = () => {
     <Router>
       <Routes>
         {/* Wrap all routes inside the Layout to apply Navbar and Footer to each */}
-        <Route element={<Layout />}>
+        <Route>
           <Route path="/" element={<Welcome />} />
           <Route path="/store" element={<Store />} />
           <Route path="/product/:id" element={<ProductDetails />} />
