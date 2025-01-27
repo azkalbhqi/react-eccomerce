@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Welcome from './components/bigComponents/Welcome';
 import Store from './components/bigComponents/Stores';
 import ProductDetails from './components/bigComponents/ProductDetails';
+import About from './components/bigComponents/About';
 
 import './css/App.css'
 
@@ -23,7 +24,7 @@ const App = () =>{
         <Route path="/" element={<Welcome/>} />
         <Route path="/store" element={<Store />} />
         <Route path="/product/:id" element={<ProductDetails />} />
-        {/* <Route path="/about" element={<AboutPage />} /> */}
+        <Route path="/about" element={<About />} />
       </Routes>
     </Router>
     </>

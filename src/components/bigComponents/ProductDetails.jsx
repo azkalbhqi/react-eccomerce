@@ -1,59 +1,119 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { data, useParams } from 'react-router-dom';
 import Layout from '../Layout';
+
+const Rating = ({ rating }) => {
+  const maxStars = 5;
+
+  return (
+    <div className="rating rating-sm">
+      {[...Array(maxStars)].map((_, index) => (
+        <span
+          key={index}
+          className={`mask mask-star-2 ${
+            index < Math.round(rating) ? 'bg-orange-400' : 'bg-gray-300'
+          }`}
+        />
+      ))}
+    </div>
+  );
+};
+
 
 const ProductDetails = () => {
   const { id } = useParams(); // Get the product id from the URL
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    // Fetch product details based on id from the API
+    setLoading(true);
+    setError(false);
+
     fetch(`https://fakestoreapi.com/products/${id}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch product details');
+        }
+        return response.json();
+      })
       .then((data) => {
         setProduct(data);
         setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching product details:', error);
+        setError(true);
         setLoading(false);
       });
-  }, [id]); // Re-fetch when the id changes
+  }, [id]);
 
   if (loading) {
-    return (<div className="grid place-items-center min-h-screen">
-        <span className="loading loading-infinity loading-lg"></span>
-      </div>)
+    return (
+      <div className="grid place-items-center min-h-screen">
+        <div className="space-y-4">
+          <div className="w-80 h-6 bg-gray-300 rounded animate-pulse"></div>
+          <div className="w-96 h-96 bg-gray-300 rounded-lg animate-pulse"></div>
+          <div className="w-80 h-6 bg-gray-300 rounded animate-pulse"></div>
+          <div className="w-72 h-6 bg-gray-300 rounded animate-pulse"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="grid place-items-center min-h-screen">
+        <p className="text-xl font-semibold text-red-500">Failed to load product details. Please try again later.</p>
+      </div>
+    );
   }
 
   if (!product) {
-    return <div>Product not found</div>;
+    return (
+      <div className="grid place-items-center min-h-screen">
+        <p className="text-xl font-semibold text-gray-500">Product not found</p>
+      </div>
+    );
   }
 
-  const { title, price, description, image, category } = product;
-
+  const { title, price, description, image, category, rating } = product;
+// console.log(product)
   return (
     <Layout>
+      <div className="container mx-auto p-6">
+        <div className="card bg-base-100 shadow-xl lg:flex">
+          <figure className="lg:w-1/2">
+            <img
+              src={image}
+              alt={title}
+              className="max-h-96 rounded-lg object-cover"
+            />
+          </figure>
+          <div className="flex flex-col justify-between p-6 lg:w-1/2">
+            <div>
+              <h1 className="text-3xl font-bold mb-4">{title}</h1>
+              <p className="text-xl font-semibold  mb-4">${price}</p>
+              <p className="">{description}</p>
+            </div>
+            <div className="mt-6">
+            <div className="flex justify-between items-center">
+                <div className='rating'>
+                <input type="radio" name="rating-1" className="mask mask-star" defaultChecked />
+                <p className='px-2'>{rating.rate}</p>
+                </div>
+                <p className="badge badge-primary px-4 py-1 rounded-full capitalize">
+                  {category}
+                </p>
+            </div>
+            <p className="text-sm  mt-2">
+              {rating?.count || 0} reviews
+            </p>
 
-    
-    <div className="container mx-auto p-4">
-      <div className="card bg-base-100 shadow-xl">
-        <figure>
-          <img
-            src={image}
-            alt={title}
-            className="w-full h-96 object-cover"
-          />
-        </figure>
-        <div className="flex flex-col justify-center">
-          <h2 className="text-lg font-bold">{title}</h2>
-          <p className="text-lg font-bold">${price}</p>
-          <p>{description}</p>
+            </div>
+          </div>
         </div>
-          <p className="badge-primary p-2 rounded-full w-1/4">{category}</p>
       </div>
-    </div>
     </Layout>
   );
 };
