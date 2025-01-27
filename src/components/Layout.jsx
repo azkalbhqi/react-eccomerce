@@ -1,8 +1,6 @@
-
 import Navbar from './smallComponents/Navbar';
 import Footer from './smallComponents/Footer';
 import { Outlet } from 'react-router-dom';
-import { Children } from 'react';
 
 const Layout = ({children}) => {
   return (
@@ -11,8 +9,8 @@ const Layout = ({children}) => {
       <Navbar />
 
       {/* Main Content */}
-      <div className="flex-grow">
-        <Outlet /> {children}
+      <div className="flex-grow mt-16">
+        {children}
       </div>
 
       {/* Footer */}

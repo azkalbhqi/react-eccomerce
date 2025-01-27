@@ -51,7 +51,11 @@ const Store = () => {
 
   return (
     <Layout>
+      <div className='p-4 mt-4 flex justify-center '>
+        <h1 className='text-3xl font-bold'>Our Products</h1>
+      </div>
       <div className="container mx-auto p-5">
+        
         {/* Filter Dropdown */}
         <div className="flex justify-start w-1/6 mb-6">
           <select

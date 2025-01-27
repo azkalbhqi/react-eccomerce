@@ -1,34 +1,24 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-// import Welcome from './components/bigComponents/Welcome'
-import "swiper/css";
-
-
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './Layout'; // Import the Layout component
 import Welcome from './components/bigComponents/Welcome';
 import Store from './components/bigComponents/Stores';
 import ProductDetails from './components/bigComponents/ProductDetails';
 import About from './components/bigComponents/About';
 
-import './css/App.css'
-
-const App = () =>{
-  return(
-    <>
-      <Router>
-      {/* Navbar remains consistent across all pages */}
-      
-      {/* Define routes for each page */}
+const App = () => {
+  return (
+    <Router>
       <Routes>
-        <Route path="/" element={<Welcome/>} />
-        <Route path="/store" element={<Store />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/about" element={<About />} />
+        {/* Wrap all routes inside the Layout to apply Navbar and Footer to each */}
+        <Route element={<Layout />}>
+          <Route path="/" element={<Welcome />} />
+          <Route path="/store" element={<Store />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/about" element={<About />} />
+        </Route>
       </Routes>
     </Router>
-    </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
