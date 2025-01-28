@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
-const Navbar = ({ cartItemCount, onCartClick }) => {
+const Navbar = () => {
   return (
     <>
       <div className="navbar glass fixed top-0 left-0 w-full z-50">
@@ -34,19 +34,11 @@ const Navbar = ({ cartItemCount, onCartClick }) => {
         <div className="flex-none">
           <ul className="menu menu-horizontal font-semibold px-1">
             <li>
-              <Link to="/">Welcome</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/store">Store</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              {/* Cart Icon with Item Count */}
-              <div className="flex-none">
-                <button onClick={onCartClick} className="relative">
-                  <svg
+              <Link to="/cart">
+              <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5"
                     fill="none"
@@ -60,14 +52,24 @@ const Navbar = ({ cartItemCount, onCartClick }) => {
                       d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  {cartItemCount > 0 && (
-                    <span className="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-red-600 rounded-full">
-                      {cartItemCount}
-                    </span>
-                  )}
-                </button>
-              </div>
+              </Link>
             </li>
+           
+            <li>
+            <details>
+            <summary>Other</summary>
+              <ul className="bg-base-100 rounded-t-none p-2">
+              <li>
+              <Link to="/store">Store</Link>
+            </li>
+              <li>
+              <Link to="/about">About</Link>
+            </li>
+            
+              </ul>
+          </details>
+            </li>
+            
           </ul>
         </div>
       </div>

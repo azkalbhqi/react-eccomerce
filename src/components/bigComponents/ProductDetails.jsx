@@ -49,10 +49,89 @@ const ProductDetails = () => {
   }, [id]);
 
   const handleAddToCart = () => {
-    setCart((prevCart) => [...prevCart, product]);
-    alert(`${product.title} has been added to your cart!`);
-  };
+    if (!product) return;
+  
+    // Prepare product data for the API
+    const cartProduct = {
+      productId: product.id,
+      quantity: 1, // Assuming we're adding 1 product at a time
+    };
+  
+    // Fetch the current cart data
+    fetch('https://fakestoreapi.com/carts/1')
+      .then((response) => response.json())
+      .then((cartData) => {
+        // Find if the product already exists in the cart
+        const existingProduct = cartData.products.find(
+          (item) => item.productId === product.id
+        );
+  
+        // If product exists, update its quantity, otherwise add a new product
+        const updatedProducts = existingProduct
+          ? cartData.products.map((item) =>
+              item.productId === product.id
+                ? { ...item, quantity: item.quantity + 1 }
+                : item
+            )
+          : [...cartData.products, cartProduct];
+  
+        // Update the cart with the new product data
+        fetch('https://fakestoreapi.com/carts/1', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...cartData,
+            products: updatedProducts,
+          }),
+        })
+          .then((response) => response.json())
+          .then((updatedCart) => {
+            // After the cart is updated, update the local cart state to trigger UI changes
+            setCart(updatedCart.products);  // Update the local state with the updated cart products
+            const popup = document.createElement('div');
+    popup.setAttribute('role', 'alert');
+    popup.classList.add('popup', 'alert', 'alert-success', 'w-1/3');
+  
+    // Add content to the pop-up
+    popup.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>${product.title} has been added to your cart!</span>
+    `;
+  
+    // Style the pop-up to appear in the center of the screen
+    popup.style.position = 'fixed';
+    popup.style.top = '50%';
+    popup.style.left = '50%';
+    popup.style.transform = 'translate(-50%, -50%)';
+    popup.style.padding = '20px';
+    popup.style.backgroundColor = '#28a745';
+    popup.style.color = 'white';
+    popup.style.borderRadius = '8px';
+    popup.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+    popup.style.zIndex = '1000';
+  
+    // Append pop-up to the body
+    document.body.appendChild(popup);
+  
+    // Remove pop-up after a few seconds
+    setTimeout(() => {
+      popup.remove();
+    }, 5000);
 
+          })
+          .catch((error) => {
+            console.error('Error updating cart:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error fetching cart:', error);
+      });
+  };
+  
   if (loading) {
     return (
       <div className="grid place-items-center min-h-screen">

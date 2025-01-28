@@ -70,51 +70,57 @@ const WelcomePage = () => {
       </div>
     </section>
 
-      <div className="container mx-auto p-4">
-
-        <h2 id="product" className="text-2xl font-bold text-center mb-8">Featured Products</h2>
-
-        <Swiper
-          spaceBetween={20}
-          slidesPerView={3} // Adjust how many slides are visible at once
-          loop={true}
-          autoplay={{
-            delay: 3000, // Slide changes every 3 seconds
-            disableOnInteraction: false,
-          }}
-          breakpoints={{
-            640: {
-              slidesPerView: 1, // 1 slide on small screens
-            },
-            768: {
-              slidesPerView: 2, // 2 slides on medium screens
-            },
-            1024: {
-              slidesPerView: 3, // 3 slides on larger screens
-            },
-          }}
-        >
-          {products.map((product) => (
-            <SwiperSlide key={product.id}>
-              <div className="card bg-base-100 max-h-max m-4 shadow-xl">
-                <figure>
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-48 object-cover"
-                  />
-                </figure>
-                <div className="card-body">
-                  <h2 className="card-title h-10">{product.title}</h2>
-                  <p>{product.description.substring(0, 50)}...</p>
-                  <p className="text-lg font-bold">${product.price}</p>
-                  
-                </div>
+    <div className="container mx-auto p-4">
+      <h2
+        id="product"
+        className="text-2xl font-bold text-center mb-8 sm:text-3xl lg:text-4xl"
+      >
+        Featured Products
+      </h2>
+      <Swiper
+        spaceBetween={20}
+        slidesPerView={1}
+        loop={true}
+        autoplay={{
+          delay: 3000, // Slide changes every 3 seconds
+          disableOnInteraction: false,
+        }}
+        breakpoints={{
+          640: {
+            slidesPerView: 1, // 1 slide on small screens
+          },
+          768: {
+            slidesPerView: 2, // 2 slides on medium screens
+          },
+          1024: {
+            slidesPerView: 3, // 3 slides on larger screens
+          },
+        }}
+      >
+        {products.map((product) => (
+          <SwiperSlide key={product.id}>
+            <div className="card bg-base-100 max-h-max m-4 shadow-xl lg:m-2 xl:m-4">
+              <figure>
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="w-full h-48 object-cover sm:h-56 lg:h-64 xl:h-72"
+                />
+              </figure>
+              <div className="card-body">
+                <h2 className="card-title h-10 text-base sm:text-lg lg:text-xl">
+                  {product.title}
+                </h2>
+                <p className="text-sm sm:text-base">
+                  {product.description.substring(0, 50)}...
+                </p>
+                <p className="text-lg font-bold">${product.price}</p>
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
 
       <div className="flex items-center justify-center">
         <h1 className="text-3xl font-semibold">Flash sale in</h1>
@@ -148,7 +154,7 @@ const WelcomePage = () => {
         </div>
       </div>
       <div className="flex justify-center py-20">
-        <div className="stats shadow">
+        <div className="stats flex flex-col md:flex-row shadow">
           <div className="stat">
             <div className="stat-figure text-secondary">
               <svg

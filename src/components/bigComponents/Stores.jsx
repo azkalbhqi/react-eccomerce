@@ -57,7 +57,7 @@ const Store = () => {
       <div className="container mx-auto p-5">
         
         {/* Filter Dropdown */}
-        <div className="flex justify-start w-1/6 mb-6">
+        <div className="flex justify-start w-1/2 md:w-1/6 mb-6">
           <select
             value={selectedCategory}
             onChange={(e) => handleCategoryChange(e.target.value)}
